@@ -5,11 +5,11 @@ const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 // width & height are the area we have to work with
 
 const svg = d3.select("#chart-area").append("svg")
-  .attr("width", 600)
-  .attr("height", 400)
+  .attr("width", 650)
+  .attr("height", 600)
 
 const g = svg.append("g")
-  .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`) // look up what this does
+  .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
 
 const xLabel = g.append("text")
   .attr("class", "x axis-label")
@@ -40,9 +40,8 @@ g.append("g")
   .attr("transform", `translate(0, ${HEIGHT})`)
   .call(xAxisGenerator)
 
-
 const yScale = d3.scaleLinear()
-  .domain([0, 2058050])
+  .domain([1, 4040000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -51,51 +50,90 @@ g.append("g")
 
 const parseTime = d3.timeParse("%Y-%m-%d")
 
+/* LEGEND */
+const legend = g.append("g")
+  .attr("transform", `translate(${WIDTH-10}, ${HEIGHT-300})`)
+
+const legendInfo = [
+  {text: "Total doses allocated",
+   color: "red"},
+  {text: "People with at least one dose",
+   color: "purple"},
+  {text: "People fully vaccinated",
+   color: "green"},
+  {text: "Vaccine doses administered",
+   color: "blue"}]
+
+legendInfo.forEach((line, i) => {
+  const legendRow = legend.append("g")
+    .attr("transform", `translate(0, ${i*20})`)
+  legendRow.append("rect")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("fill", line.color)
+  legendRow.append("text")
+    .attr("x", -10)
+    .attr("y", 10)
+    .attr("text-anchor", "end")
+    .style("text-transform", "capitalize")
+    .style("font-size", "smaller")
+    .text(line.text)
+})
+
+
+
 d3.json("data/texas.json").then(data=> {
   console.log(data)
-
     // Add the line
 g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "steelblue")
+  .attr("stroke", "purple")
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
-    .x(d => {
-      console.log(d.date)
-      return xScale(parseTime(d.date))
-    })
-    .y(d => {
-      console.log(d.one_dose)
-      return yScale(d.one_dose)
-    })
+    .x(d => xScale(parseTime(d.date)))
+    .y(d => yScale(d.one_dose))
   )
 
-  g.append("path")
+g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 1.5)
+  .attr("stroke", "blue")
+  .attr("stroke-width", 2.0)
   .attr("d", d3.line()
-    .x(d => {
-      console.log(d.date)
-      return xScale(parseTime(d.date))
-    })
-    .y(d => {
-      console.log(d.one_dose)
-      return yScale(d.vax_administered)
-    })
+    .x(d => xScale(parseTime(d.date)))
+    .y(d => yScale(d.vax_administered))
   )
 
-  // const rects = g.selectAll("rects")
-  //   .data(data)
+g.append("path")
+  .datum(data)
+  .attr("fill", "none")
+  .attr("stroke", "red")
+  .attr("stroke-width", 1.5)
+  .attr("d", d3.line()
+    .x(d => xScale(parseTime(d.date)))
+    .y(d => yScale(d.total_doses))
+  )
 
-  // rects.enter().append("rect")
-  //   .attr("y", d => yScale(d.number))
-  //   .attr("x", (d) => xScale(d.gender))
-  //   .attr("width", xScale.bandwidth)
-  //   .attr("height", d => HEIGHT - yScale(d.number))
-  //   .attr("fill", "teal")
+g.append("path")
+  .datum(data)
+  .attr("fill", "none")
+  .attr("stroke", "green")
+  .attr("stroke-width", 1.5)
+  .attr("d", d3.line()
+    .x(d => xScale(parseTime(d.date)))
+    .y(d => yScale(d.fully_vax))
+  )
+
+// g.append("path")
+//   .datum(data)
+//   .attr("fill", "none")
+//   .attr("stroke", "black")
+//   .attr("stroke-width", 3.0)
+//   .attr("d", d3.line()
+//     .x(d => xScale(parseTime(d.date)))
+//     .y(d => yScale(d.pop_over_16))
+//   )
 })
 
 
