@@ -1,12 +1,13 @@
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
-const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
+const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
-// width & height are the area we have to work with
-
 const svg = d3.select("#chart-area").append("svg")
-  .attr("width", 650)
-  .attr("height", 600)
+  .attr("width", 800)
+  .attr("height", 400)
+const svgLegend = d3.select("#chart-legend").append("svg")
+  .attr("width", 250)
+  .attr("height", 400)
 
 const g = svg.append("g")
   .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
@@ -51,18 +52,18 @@ g.append("g")
 const parseTime = d3.timeParse("%Y-%m-%d")
 
 /* LEGEND */
-const legend = g.append("g")
-  .attr("transform", `translate(${WIDTH-10}, ${HEIGHT-300})`)
+const legend = svgLegend.append("g")
+  .attr("transform", `translate(${0}, ${200})`)
 
 const legendInfo = [
   {text: "Total doses allocated",
    color: "red"},
+  {text: "Vaccine doses administered",
+   color: "blue"},
   {text: "People with at least one dose",
    color: "purple"},
   {text: "People fully vaccinated",
-   color: "green"},
-  {text: "Vaccine doses administered",
-   color: "blue"}]
+   color: "green"}]
 
 legendInfo.forEach((line, i) => {
   const legendRow = legend.append("g")
@@ -72,11 +73,10 @@ legendInfo.forEach((line, i) => {
     .attr("height", 10)
     .attr("fill", line.color)
   legendRow.append("text")
-    .attr("x", -10)
+    .attr("x", 20)
     .attr("y", 10)
-    .attr("text-anchor", "end")
+    .attr("text-anchor", "start")
     .style("text-transform", "capitalize")
-    .style("font-size", "smaller")
     .text(line.text)
 })
 
