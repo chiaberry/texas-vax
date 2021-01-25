@@ -31,7 +31,7 @@ const yLabel = g.append("text")
 
 //todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 0, 24)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 0, 26)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6) // ?
@@ -83,7 +83,6 @@ legendInfo.forEach((line, i) => {
 
 
 d3.json("data/texas.json").then(data=> {
-  console.log(data)
     // Add the line
 g.append("path")
   .datum(data)
@@ -124,6 +123,59 @@ g.append("path")
     .x(d => xScale(parseTime(d.date)))
     .y(d => yScale(d.fully_vax))
   )
+
+  // MOUSEOVER TOOTLIP
+
+  var hoverNumber = g.append("g")
+    .attr("class", "focus")
+    .style("display", "none");
+
+  hoverNumber.append("circle")
+    .attr("r", 5);
+
+  hoverNumber.append("rect")
+      .attr("class", "tooltip")
+      .attr("width", 100)
+      .attr("height", 50)
+      .attr("x", 10)
+      .attr("y", -22)
+      .attr("rx", 4)
+      .attr("ry", 4);
+
+  hoverNumber.append("text")
+      .attr("x", 18)
+      .attr("y", 18)
+      .text("Likes:");
+
+  hoverNumber.append("text")
+      .attr("class", "tooltip-likes")
+      .attr("x", 60)
+      .attr("y", 18);
+
+  g.append("rect")
+      .attr("class", "overlay")
+      .attr("width", WIDTH)
+      .attr("height", HEIGHT)
+      .on("mouseover", function() { hoverNumber.style("display", null); })
+      .on("mouseout", function() { hoverNumber.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+  function mousemove() {
+      const bisectDate = d3.bisector(d => { 
+        console.log("DDDDD ", d)
+        return d.date
+      }).left;
+      // console.log(d3.mouse(this)[0])
+      var date = xScale.invert(d3.mouse(this)[0]),
+          i = bisectDate(data, date, 1)
+          d0 = data[i - 1],
+          d1 = data[i],
+          d = date - d0.date > d1.date - date ? d1 : d0;
+      // console.log(date, d0, d1)//, d0, d1, d)
+      console.log(i)
+      // hoverNumber.attr("transform", "translate(" + x(d.date) + "," + y(d.likes) + ")");
+      hoverNumber.select(".tooltip-likes").text(formatValue(d.likes));
+  }
 
 // g.append("path")
 //   .datum(data)
