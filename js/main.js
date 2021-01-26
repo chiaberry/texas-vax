@@ -50,6 +50,7 @@ g.append("g")
   .call(yAxisGenerator)
 
 const parseTime = d3.timeParse("%Y-%m-%d")
+const formatTime = d3.timeFormat("%Y-%m-%d")
 
 /* LEGEND */
 const legend = svgLegend.append("g")
@@ -145,7 +146,7 @@ g.append("path")
   hoverNumber.append("text")
       .attr("x", 18)
       .attr("y", 18)
-      .text("Likes:");
+      .text("Doses: ");
 
   hoverNumber.append("text")
       .attr("class", "tooltip-likes")
@@ -161,20 +162,14 @@ g.append("path")
       .on("mousemove", mousemove);
 
   function mousemove() {
-      const bisectDate = d3.bisector(d => { 
-        console.log("DDDDD ", d)
-        return d.date
-      }).left;
-      // console.log(d3.mouse(this)[0])
+      const bisectDate = d3.bisector(d => d.date).right;
       var date = xScale.invert(d3.mouse(this)[0]),
-          i = bisectDate(data, date, 1)
+          i = bisectDate(data, formatTime(date), 1)
           d0 = data[i - 1],
           d1 = data[i],
           d = date - d0.date > d1.date - date ? d1 : d0;
-      // console.log(date, d0, d1)//, d0, d1, d)
-      console.log(i)
-      // hoverNumber.attr("transform", "translate(" + x(d.date) + "," + y(d.likes) + ")");
-      hoverNumber.select(".tooltip-likes").text(formatValue(d.likes));
+      hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
+      hoverNumber.select(".tooltip-likes").text((d.vax_administered));
   }
 
 // g.append("path")
