@@ -125,41 +125,32 @@ g.append("path")
     .y(d => yScale(d.fully_vax))
   )
 
-  // MOUSEOVER TOOTLIP
+// MOUSEOVER TOOTLIP
 
-  var hoverNumber = g.append("g")
-    .attr("class", "focus")
-    .style("display", "none");
+var hoverNumber = g.append("g")
+  .attr("class", "focus")
+  .style("display", "none");
 
-  hoverNumber.append("circle")
-    .attr("r", 5);
+hoverNumber.append("circle")
+  .attr("r", 5);
 
-  hoverNumber.append("rect")
-      .attr("class", "tooltip")
-      .attr("width", 100)
-      .attr("height", 50)
-      .attr("x", 10)
-      .attr("y", -22)
-      .attr("rx", 4)
-      .attr("ry", 4);
+hoverNumber.append("text")
+  .attr("x", 18)
+  .attr("y", 18)
+  .text("Doses: ");
 
-  hoverNumber.append("text")
-      .attr("x", 18)
-      .attr("y", 18)
-      .text("Doses: ");
+hoverNumber.append("text")
+  .attr("class", "tooltip-likes")
+  .attr("x", 70)
+  .attr("y", 18);
 
-  hoverNumber.append("text")
-      .attr("class", "tooltip-likes")
-      .attr("x", 60)
-      .attr("y", 18);
-
-  g.append("rect")
-      .attr("class", "overlay")
-      .attr("width", WIDTH)
-      .attr("height", HEIGHT)
-      .on("mouseover", function() { hoverNumber.style("display", null); })
-      .on("mouseout", function() { hoverNumber.style("display", "none"); })
-      .on("mousemove", mousemove);
+g.append("rect")
+  .attr("class", "overlay")
+  .attr("width", WIDTH)
+  .attr("height", HEIGHT)
+  .on("mouseover", function() { hoverNumber.style("display", null); })
+  .on("mouseout", function() { hoverNumber.style("display", "none"); })
+  .on("mousemove", mousemove);
 
   function mousemove() {
       const bisectDate = d3.bisector(d => d.date).right;
@@ -167,7 +158,7 @@ g.append("path")
           i = bisectDate(data, formatTime(date), 1)
           d0 = data[i - 1],
           d1 = data[i],
-          d = date - d0.date > d1.date - date ? d1 : d0;
+          d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
       hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
       hoverNumber.select(".tooltip-likes").text((d.vax_administered));
   }

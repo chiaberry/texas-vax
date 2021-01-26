@@ -31,19 +31,11 @@
   pointer-events: all;
 }
 
-    .hoverNumber circle {
-        fill: steelblue;
-    }
+.hoverNumber circle {
+  fill: #1492ff;
+}
 
-    .hoverNumber text {
-        font-size: 14px;
-    }
+.hoverNumber text {
+  font-size: 14px;
+}
 
-    .tooltip {
-        fill: white;
-        stroke: #000;
-    }
-
-    .tooltip-date, .tooltip-likes {
-        font-weight: bold;
-    }
