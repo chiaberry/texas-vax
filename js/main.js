@@ -1,13 +1,13 @@
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
 const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT
-const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
+const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
 
 const svg = d3.select("#chart-area").append("svg")
   .attr("width", 800)
-  .attr("height", 400)
+  .attr("height", 500)
 const svgLegend = d3.select("#chart-legend").append("svg")
   .attr("width", 250)
-  .attr("height", 400)
+  .attr("height", 500)
 
 const g = svg.append("g")
   .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
@@ -57,14 +57,45 @@ const legend = svgLegend.append("g")
   .attr("transform", `translate(${0}, ${200})`)
 
 const legendInfo = [
-  {text: "Total doses allocated",
-   color: "red"},
-  {text: "Vaccine doses administered",
-   color: "blue"},
-  {text: "People with at least one dose",
-   color: "purple"},
-  {text: "People fully vaccinated",
-   color: "green"}]
+  {
+    name: "total_doses",
+    text: "Total doses allocated",
+    color: "red"
+  },
+  {
+    name: "vax_administered",
+    text: "Vaccine doses administered",
+    color: "blue"
+  },
+  {
+    name: "one_dose",
+    text: "People with at least one dose",
+   color: "purple"
+ },
+ {  name: "fully_vax",
+    text: "People fully vaccinated",
+   color: "green"
+ }
+]
+
+const dataInfo = {
+  "total_doses": {
+    text: "Total doses allocated",
+    color: "red"
+  },
+  "vax_administered": {
+    text: "Vaccine doses administered",
+    color: "blue"
+  },
+  "one_dose": {
+    text: "People with at least one dose",
+   color: "purple"
+ },
+ "fully_vax": {
+    text: "People fully vaccinated",
+   color: "green"
+ }
+}
 
 legendInfo.forEach((line, i) => {
   const legendRow = legend.append("g")
@@ -80,8 +111,6 @@ legendInfo.forEach((line, i) => {
     .style("text-transform", "capitalize")
     .text(line.text)
 })
-
-
 
 d3.json("data/texas.json").then(data=> {
     // Add the line
@@ -125,34 +154,47 @@ g.append("path")
     .y(d => yScale(d.fully_vax))
   )
 
-// MOUSEOVER TOOTLIP
+// MOUSEOVER INFORMATION
 
 var hoverNumber = g.append("g")
   .attr("class", "focus")
   .style("display", "none");
 
-// hoverNumber.append("circle")
-//   .attr("r", 5);
-
-
-//   hoverNumber.append("rect")
-//     .attr("class", "tooltip")
-//     .attr("width", 100)
-//     .attr("height", 50)
-//     .attr("x", 10)
-//     .attr("y", -22)
-//     .attr("rx", 4)
-//     .attr("ry", 4);
-
+// these should be pulled into the loop below
+// also right justify the numbers
+// and format the numbers with commas
 hoverNumber.append("text")
   .attr("x", 18)
   .attr("y", 18)
-  .text("Doses: ");
-
+  .text("Allocated: ");
 hoverNumber.append("text")
-  .attr("class", "tooltip-likes")
-  .attr("x", 70)
+  .attr("class", "total-allocated")
+  .attr("x", 115)
   .attr("y", 18);
+hoverNumber.append("text")
+  .attr("x", 18)
+  .attr("y", 36)
+  .text("Administered: ");
+hoverNumber.append("text")
+  .attr("class", "total-administered")
+  .attr("x", 115)
+  .attr("y", 36);
+hoverNumber.append("text")
+  .attr("x", 18)
+  .attr("y", 54)
+  .text("One Dose: ");
+hoverNumber.append("text")
+  .attr("class", "one-dose")
+  .attr("x", 115)
+  .attr("y", 54);
+hoverNumber.append("text")
+  .attr("x", 18)
+  .attr("y", 72)
+  .text("Both Dose: ");
+hoverNumber.append("text")
+  .attr("class", "both-dose")
+  .attr("x", 115)
+  .attr("y", 72);
 
 g.append("rect")
   .attr("class", "overlay")
@@ -176,21 +218,24 @@ g.append("rect")
           d1 = data[i],
           d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
       // hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
-      hoverNumber.select(".tooltip-likes").text((d.vax_administered));
+      hoverNumber.select(".total-allocated").text(d.total_doses);
+      hoverNumber.select(".total-administered").text(d.vax_administered);
+      hoverNumber.select(".one-dose").text(d.one_dose);
+      hoverNumber.select(".both-dose").text(d.fully_vax);
       for (let key of Object.keys(d)) {
         if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
           hoverNumber.append("circle")
             .attr("class", "tooltip-dot")
-            .attr("r", 3)
-            .attr("fill", "purple")
+            .attr("r", 4)
+            .attr("fill", dataInfo[key].color)
             .attr("cx", xScale(parseTime(d.date)))
             .attr("cy", yScale(d[key]))
-          hoverNumber.append("text")
-            .attr("class", "tooltip-number")
-            .attr("x", xScale(parseTime(d.date)))
-            .attr("y", yScale(d[key]))
-            .text(d[key])
-            .attr("transform", "translate(5, 15)")
+          // hoverNumber.append("text")
+          //   .attr("class", "tooltip-number")
+          //   .attr("x", xScale(parseTime(d.date)))
+          //   .attr("y", yScale(d[key]))
+          //   .text(d[key])
+          //   .attr("transform", "translate(5, 15)")
         }
       }
   }
