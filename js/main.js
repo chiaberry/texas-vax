@@ -131,8 +131,18 @@ var hoverNumber = g.append("g")
   .attr("class", "focus")
   .style("display", "none");
 
-hoverNumber.append("circle")
-  .attr("r", 5);
+// hoverNumber.append("circle")
+//   .attr("r", 5);
+
+
+//   hoverNumber.append("rect")
+//     .attr("class", "tooltip")
+//     .attr("width", 100)
+//     .attr("height", 50)
+//     .attr("x", 10)
+//     .attr("y", -22)
+//     .attr("rx", 4)
+//     .attr("ry", 4);
 
 hoverNumber.append("text")
   .attr("x", 18)
@@ -149,18 +159,40 @@ g.append("rect")
   .attr("width", WIDTH)
   .attr("height", HEIGHT)
   .on("mouseover", function() { hoverNumber.style("display", null); })
-  .on("mouseout", function() { hoverNumber.style("display", "none"); })
+  .on("mouseout", function() { 
+    hoverNumber.style("display", "none");
+    hoverNumber.selectAll(".tooltip-dot").remove();
+    hoverNumber.selectAll(".tooltip-number").remove();
+  })
   .on("mousemove", mousemove);
 
   function mousemove() {
+      hoverNumber.selectAll(".tooltip-dot").remove();
+      hoverNumber.selectAll(".tooltip-number").remove();
       const bisectDate = d3.bisector(d => d.date).right;
       var date = xScale.invert(d3.mouse(this)[0]),
           i = bisectDate(data, formatTime(date), 1)
           d0 = data[i - 1],
           d1 = data[i],
           d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
-      hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
+      // hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
       hoverNumber.select(".tooltip-likes").text((d.vax_administered));
+      for (let key of Object.keys(d)) {
+        if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
+          hoverNumber.append("circle")
+            .attr("class", "tooltip-dot")
+            .attr("r", 3)
+            .attr("fill", "purple")
+            .attr("cx", xScale(parseTime(d.date)))
+            .attr("cy", yScale(d[key]))
+          hoverNumber.append("text")
+            .attr("class", "tooltip-number")
+            .attr("x", xScale(parseTime(d.date)))
+            .attr("y", yScale(d[key]))
+            .text(d[key])
+            .attr("transform", "translate(5, 15)")
+        }
+      }
   }
 
 // g.append("path")

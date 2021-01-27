@@ -39,3 +39,6 @@
   font-size: 14px;
 }
 
+.tooltip, .tooltip-likes {
+  stroke: #000;
+}
