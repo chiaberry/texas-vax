@@ -51,6 +51,7 @@ g.append("g")
 
 const parseTime = d3.timeParse("%Y-%m-%d")
 const formatTime = d3.timeFormat("%Y-%m-%d")
+const formatNumber = num => num.toLocaleString();
 
 /* LEGEND */
 const legend = svgLegend.append("g")
@@ -169,32 +170,36 @@ hoverNumber.append("text")
   .text("Allocated: ");
 hoverNumber.append("text")
   .attr("class", "total-allocated")
-  .attr("x", 115)
-  .attr("y", 18);
+  .attr("x", 192)
+  .attr("y", 18)
+  .attr("text-anchor", "end");
 hoverNumber.append("text")
   .attr("x", 18)
   .attr("y", 36)
   .text("Administered: ");
 hoverNumber.append("text")
   .attr("class", "total-administered")
-  .attr("x", 115)
-  .attr("y", 36);
+  .attr("x", 192)
+  .attr("y", 36)
+  .attr("text-anchor", "end");
 hoverNumber.append("text")
   .attr("x", 18)
   .attr("y", 54)
   .text("One Dose: ");
 hoverNumber.append("text")
   .attr("class", "one-dose")
-  .attr("x", 115)
-  .attr("y", 54);
+  .attr("x", 192)
+  .attr("y", 54)
+  .attr("text-anchor", "end");
 hoverNumber.append("text")
   .attr("x", 18)
   .attr("y", 72)
   .text("Both Dose: ");
 hoverNumber.append("text")
   .attr("class", "both-dose")
-  .attr("x", 115)
-  .attr("y", 72);
+  .attr("x", 192)
+  .attr("y", 72)
+  .attr("text-anchor", "end");
 
 g.append("rect")
   .attr("class", "overlay")
@@ -218,10 +223,10 @@ g.append("rect")
           d1 = data[i],
           d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
       // hoverNumber.attr("transform", "translate(" + xScale(parseTime(d.date)) + "," + yScale(d.vax_administered) + ")");
-      hoverNumber.select(".total-allocated").text(d.total_doses);
-      hoverNumber.select(".total-administered").text(d.vax_administered);
-      hoverNumber.select(".one-dose").text(d.one_dose);
-      hoverNumber.select(".both-dose").text(d.fully_vax);
+      hoverNumber.select(".total-allocated").text(formatNumber(d.total_doses));
+      hoverNumber.select(".total-administered").text(formatNumber(d.vax_administered));
+      hoverNumber.select(".one-dose").text(formatNumber(d.one_dose));
+      hoverNumber.select(".both-dose").text(formatNumber(d.fully_vax));
       for (let key of Object.keys(d)) {
         if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
           hoverNumber.append("circle")
