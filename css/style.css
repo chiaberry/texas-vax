@@ -25,3 +25,22 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.hoverNumber circle {
+  fill: #1492ff;
+}
+
+.hoverNumber text {
+  font-size: 12px;
+}
+
+.tooltip, .tooltip-likes {
+  stroke: #000;
+}
+
+
