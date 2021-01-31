@@ -1,152 +1,90 @@
-//const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
-//const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
-//const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
-
-// width & height are the area we have to work with
+const BARHEIGHT = 35;
 
 const svgCounty = d3.select("#counties").append("svg")
-  .attr("width", 650)
+  .attr("width", 700)
   .attr("height", 600)
 
 const gCounty = svgCounty.append("g")
-  .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
-
-// const xLabel = g.append("text")
-//   .attr("class", "x axis-label")
-//   .attr("x", WIDTH/2)
-//   .attr("y", HEIGHT+60)
-//   .attr("font-size", "20px")
-//   .attr("text-anchor", "middle")
-//   .text("Date")
-// const yLabel = g.append("text")
-//   .attr("class", "y axis-label")
-//   .attr("x", -(HEIGHT/2))
-//   .attr("y", -60)
-//   .attr("font-size", "20px")
-//   .attr("text-anchor", "middle")
-//   .attr("transform", "rotate(-90)")
-//   .text("Doses and Population")
-
+  .attr("transform", `translate(0, 50)`)
 
 const xScaleC = d3.scaleLinear()
-    .domain([0, 1016090])
-    .range([0, 400]);
-// const xAxisGenerator = d3.axisBottom(xScale)
-//     .tickSize(6) // ?
-//     .tickFormat(d3.timeFormat("%m/%d"));
-// g.append("g")
-//   .attr("class", "x axis")
-//   .attr("transform", `translate(0, ${HEIGHT})`)
-//   .call(xAxisGenerator)
+    .domain([0, 1055964])
+    .range([0, 500]);
 
-// const yScale = d3.scaleLinear()
-//   .domain([1, 4040000])
-//   .range([HEIGHT, 0])
-// const yAxisGenerator = d3.axisLeft(yScale)
-// g.append("g")
-//   .attr("class", "y axis")
-//   .call(yAxisGenerator)
-
-// const parseTime = d3.timeParse("%Y-%m-%d")
-
-// /* LEGEND */
-// const legend = g.append("g")
-//   .attr("transform", `translate(${WIDTH-10}, ${HEIGHT-300})`)
-
-// const legendInfo = [
-//   {text: "Total doses allocated",
-//    color: "red"},
-//   {text: "People with at least one dose",
-//    color: "purple"},
-//   {text: "People fully vaccinated",
-//    color: "green"},
-//   {text: "Vaccine doses administered",
-//    color: "blue"}]
-
-// legendInfo.forEach((line, i) => {
-//   const legendRow = legend.append("g")
-//     .attr("transform", `translate(0, ${i*20})`)
-//   legendRow.append("rect")
-//     .attr("width", 10)
-//     .attr("height", 10)
-//     .attr("fill", line.color)
-//   legendRow.append("text")
-//     .attr("x", -10)
-//     .attr("y", 10)
-//     .attr("text-anchor", "end")
-//     .style("text-transform", "capitalize")
-//     .style("font-size", "smaller")
-//     .text(line.text)
-// })
-
-
+// todo: clean the data
 
 d3.csv("data/tx_county_recent.csv").then(data=> {
   console.log(data[228])
   console.log(data[228]["Total Doses Allocated"])
 
+  svgCounty.append("text")
+    .attr("x", 0)
+    .attr("y", 15)
+    .attr("class", "county-name")
+    .text(`${data[228]["County Name"]} County`);
+
   gCounty.append("rect")
-    .attr("width", 400)
-    .attr("height", 30)
-    .attr("fill", "aliceblue")
+    .attr("width", 500)
+    .attr("height", BARHEIGHT)
+    .attr("fill", " #f2e4d4")
+  gCounty.append("text")
+    .attr("x", 500)
+    .attr("y", 55)
+    .text(`Population 16+: ${data[228]["Population, 16+"]}`)
 
   gCounty.append("rect")
     .attr("width", xScaleC(Number(data[228]["Total Doses Allocated"].replace(/,/g, ''))))
-    .attr("height", 30)
-    .attr("fill", "blue")
+    .attr("height", BARHEIGHT)
+    .attr("fill", "#fa9441")
+  gCounty.append("text")
+    .attr("x", xScaleC(Number(data[228]["Total Doses Allocated"].replace(/,/g, ''))))
+    .attr("y", -5)
+    .attr("fill-opacity", "50%")
+    .text(`Allocated: ${data[228]["Total Doses Allocated"]}`)
+
+  gCounty.append("rect")
+    .attr("width", xScaleC(Number(data[228]["Vaccine Doses Administered"].replace(/,/g, ''))))
+    .attr("height", BARHEIGHT)
+    .attr("fill", "#97d4ea")
+  gCounty.append("text")
+    .attr("x", xScaleC(Number(data[228]["Vaccine Doses Administered"].replace(/,/g, ''))))
+    .attr("y", 55)
+    .text(`Administered: ${data[228]["Vaccine Doses Administered"]}`)
+
+  gCounty.append("rect")
+    .attr("width", xScaleC(Number(data[228]["People Vaccinated with at least One Dose"].replace(/,/g, ''))))
+    .attr("height", BARHEIGHT)
+    .attr("fill", "#00bde3")
+  gCounty.append("text")
+    .attr("x", xScaleC(Number(data[228]["People Vaccinated with at least One Dose"].replace(/,/g, ''))))
+    .attr("y", 75)
+    .text(`One Dose: ${data[228]["People Vaccinated with at least One Dose"]}`)
+  gCounty.append("line")
+    .attr("x1", xScaleC(Number(data[228]["People Vaccinated with at least One Dose"].replace(/,/g, ''))))
+    .attr("y1", 40)
+    .attr("x2", xScaleC(Number(data[228]["People Vaccinated with at least One Dose"].replace(/,/g, ''))))
+    .attr("y2", 65)
+    .attr("stroke", "#00bde3")
+    .attr("stroke-dasharray", "3 1")
+
+  gCounty.append("rect")
+    .attr("width", xScaleC(Number(data[228]["People Fully Vaccinated"].replace(/,/g, ''))))
+    .attr("height", BARHEIGHT)
+    .attr("fill", "#07648d")
+  gCounty.append("text")
+    .attr("x", xScaleC(Number(data[228]["People Fully Vaccinated"].replace(/,/g, ''))))
+    .attr("y", 95)
+    .text(`Both Doses: ${data[228]["People Fully Vaccinated"]}`)
+  gCounty.append("line")
+    .attr("x1", xScaleC(Number(data[228]["People Fully Vaccinated"].replace(/,/g, ''))))
+    .attr("y1", 40)
+    .attr("x2", xScaleC(Number(data[228]["People Fully Vaccinated"].replace(/,/g, ''))))
+    .attr("y2", 80)
+    .attr("stroke", "#07648d")
+    .attr("stroke-width", 2)
 
 })
-    // Add the line
-// g.append("path")
-//   .datum(data)
-//   .attr("fill", "none")
-//   .attr("stroke", "purple")
-//   .attr("stroke-width", 1.5)
-//   .attr("d", d3.line()
-//     .x(d => xScale(parseTime(d.date)))
-//     .y(d => yScale(d.one_dose))
-//   )
 
-// g.append("path")
-//   .datum(data)
-//   .attr("fill", "none")
-//   .attr("stroke", "blue")
-//   .attr("stroke-width", 2.0)
-//   .attr("d", d3.line()
-//     .x(d => xScale(parseTime(d.date)))
-//     .y(d => yScale(d.vax_administered))
-//   )
-
-// g.append("path")
-//   .datum(data)
-//   .attr("fill", "none")
-//   .attr("stroke", "red")
-//   .attr("stroke-width", 1.5)
-//   .attr("d", d3.line()
-//     .x(d => xScale(parseTime(d.date)))
-//     .y(d => yScale(d.total_doses))
-//   )
-
-// g.append("path")
-//   .datum(data)
-//   .attr("fill", "none")
-//   .attr("stroke", "green")
-//   .attr("stroke-width", 1.5)
-//   .attr("d", d3.line()
-//     .x(d => xScale(parseTime(d.date)))
-//     .y(d => yScale(d.fully_vax))
-//   )
-
-// // g.append("path")
-// //   .datum(data)
-// //   .attr("fill", "none")
-// //   .attr("stroke", "black")
-// //   .attr("stroke-width", 3.0)
-// //   .attr("d", d3.line()
-// //     .x(d => xScale(parseTime(d.date)))
-// //     .y(d => yScale(d.pop_over_16))
-// //   )
-// })
 
 
 

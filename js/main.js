@@ -31,7 +31,7 @@ const yLabel = g.append("text")
 
 //todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 0, 30)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 1, 2)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6) // ?
@@ -61,40 +61,40 @@ const legendInfo = [
   {
     name: "total_doses",
     text: "Total doses allocated",
-    color: "red"
+    color: "#fa9441"
   },
   {
     name: "vax_administered",
     text: "Vaccine doses administered",
-    color: "blue"
+    color: "#538200"
   },
   {
     name: "one_dose",
     text: "People with at least one dose",
-   color: "purple"
+   color: "#00bde3"
  },
  {  name: "fully_vax",
     text: "People fully vaccinated",
-   color: "green"
+   color: "#07648d"
  }
 ]
 
 const dataInfo = {
   "total_doses": {
     text: "Total doses allocated",
-    color: "red"
+    color: "#fa9441"
   },
   "vax_administered": {
     text: "Vaccine doses administered",
-    color: "blue"
+    color: "#538200"
   },
   "one_dose": {
     text: "People with at least one dose",
-   color: "purple"
+   color: "#00bde3"
  },
  "fully_vax": {
     text: "People fully vaccinated",
-   color: "green"
+   color: "#07648d"
  }
 }
 
@@ -118,7 +118,7 @@ d3.json("data/texas.json").then(data=> {
 g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "purple")
+  .attr("stroke", "#00bde3")
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
     .x(d => xScale(parseTime(d.date)))
@@ -128,7 +128,7 @@ g.append("path")
 g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "blue")
+  .attr("stroke", "#538200")
   .attr("stroke-width", 2.0)
   .attr("d", d3.line()
     .x(d => xScale(parseTime(d.date)))
@@ -138,7 +138,7 @@ g.append("path")
 g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "red")
+  .attr("stroke", "#fa9441")
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
     .x(d => xScale(parseTime(d.date)))
@@ -148,7 +148,7 @@ g.append("path")
 g.append("path")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "green")
+  .attr("stroke", "#07648d")
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
     .x(d => xScale(parseTime(d.date)))

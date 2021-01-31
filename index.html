@@ -18,7 +18,7 @@
   <!-- Bootstrap grid setup -->
   <div class="container">
     <div class="row">
-      <div id="explainer">
+      <div class="explainer">
         Data downloaded daily from <a href="https://www.dshs.texas.gov/coronavirus/i">Texas Health and Human Services</a>
       </div>
     </div>
@@ -30,7 +30,12 @@
         <div id="chart-legend"></div>
       </div>
     </div>
+    <div class="row"><h2>County Specific Data</h2></div>
     <div class="row">
+      <div>
+        <p>Heavily inspired by <a href="https://www.washingtonpost.com/graphics/2020/health/covid-vaccine-states-distribution-doses/">The Washington Post's state visualizations.</a></p>
+        <p>Last updated: 1/30/21</p>
+      </div>
       <div id="counties"></div>
     </div>
   </div>
@@ -42,6 +47,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <!-- Custom JS -->
   <script src="js/main.js"></script>
-  <!---<script src="js/counties.js"></script>-->
+  <script src="js/counties.js"></script>
 </body>
 </html>
