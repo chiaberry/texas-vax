@@ -31,7 +31,7 @@ const yLabel = g.append("text")
 
 //todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 0, 30)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 1, 2)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6) // ?

@@ -14,7 +14,7 @@
 	padding: 5px 0px;
 }
 
-#explainer {
+.explainer {
   margin-top: 24px;
   margin-left: auto;
   margin-right: auto;
@@ -43,4 +43,7 @@
   stroke: #000;
 }
 
+.county-name {
+  font-size: 125%;
+}
 
