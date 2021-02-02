@@ -160,6 +160,15 @@
     "fully_vax": 448649,
     "pop_over_16": 23418623,
     "pop_over_65": 4073596
+  },
+  {
+    "date": "2021-01-31",
+    "total_doses": 3898700,
+    "vax_administered": 2359323,
+    "one_dose": 1883862,
+    "fully_vax": 475461,
+    "pop_over_16": 23418623,
+    "pop_over_65": 4073596
   }
 ]
 
