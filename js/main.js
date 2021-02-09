@@ -1,9 +1,9 @@
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
-const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT
+const WIDTH = 750 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
 
 const svg = d3.select("#chart-area").append("svg")
-  .attr("width", 800)
+  .attr("width", 850)
   .attr("height", 500)
 const svgLegend = d3.select("#chart-legend").append("svg")
   .attr("width", 250)
@@ -79,6 +79,8 @@ const dataInfo = {
 /* LEGEND */
 const legend = svgLegend.append("g")
   .attr("transform", `translate(${0}, ${200})`)
+const legend2 = g.append("g")
+  .attr("transform", 'translate(10, 18)')
 const hoverNumber = g.append("g")
   .attr("class", "focus")
   .style("display", "none");
@@ -86,7 +88,7 @@ const hoverNumber = g.append("g")
 let i = 0;
 for (let key of Object.keys(dataInfo)) {
   // legend
-  const legendRow = legend.append("g")
+  const legendRow = legend2.append("g")
     .attr("transform", `translate(0, ${i*20})`)
   legendRow.append("rect")
     .attr("width", 10)
@@ -96,17 +98,17 @@ for (let key of Object.keys(dataInfo)) {
     .attr("x", 20)
     .attr("y", 10)
     .attr("text-anchor", "start")
-    .style("text-transform", "capitalize")
+    // .style("text-transform", "capitalize")
     .text(dataInfo[key].text)
   // upper left numbers revealed on mouseover
-  hoverNumber.append("text")
-    .attr("x", 18)
-    .attr("y", 18 + (i * 18))
-    .text(dataInfo[key].shortText);
+  // hoverNumber.append("text")
+  //   .attr("x", 18)
+  //   .attr("y", 18 + (i * 18))
+  //   .text(dataInfo[key].text);
   hoverNumber.append("text")
     .attr("class", key)
-    .attr("x", 192)
-    .attr("y", 18 + (i * 18))
+    .attr("x", 300)
+    .attr("y", 29 + (i * 20))
     .attr("text-anchor", "end");
   i = i + 1;
 }
