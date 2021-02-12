@@ -1,9 +1,9 @@
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
-const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT
+const WIDTH = 850 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
 
 const svg = d3.select("#chart-area").append("svg")
-  .attr("width", 800)
+  .attr("width", 850)
   .attr("height", 500)
 const svgLegend = d3.select("#chart-legend").append("svg")
   .attr("width", 250)
@@ -31,7 +31,7 @@ const yLabel = g.append("text")
 
 //todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 1, 10)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 1, 15)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6)
@@ -42,7 +42,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 5500000])
+  .domain([0, 6000000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -51,6 +51,7 @@ g.append("g")
 
 const parseTime = d3.timeParse("%Y-%m-%d")
 const formatTime = d3.timeFormat("%Y-%m-%d")
+const shortTime = d3.timeFormat("%b %d")
 const formatNumber = num => num.toLocaleString();
 
 const dataInfo = {
@@ -65,7 +66,7 @@ const dataInfo = {
     shortText: "Administered: "
   },
   "one_dose": {
-    text: "People with at least one dose",
+    text: "People with 1+ dose",
     color: "#00bde3",
     shortText: "One Dose: "
  },
@@ -79,6 +80,8 @@ const dataInfo = {
 /* LEGEND */
 const legend = svgLegend.append("g")
   .attr("transform", `translate(${0}, ${200})`)
+const legend2 = g.append("g")
+  .attr("transform", 'translate(20, 18)')
 const hoverNumber = g.append("g")
   .attr("class", "focus")
   .style("display", "none");
@@ -86,7 +89,7 @@ const hoverNumber = g.append("g")
 let i = 0;
 for (let key of Object.keys(dataInfo)) {
   // legend
-  const legendRow = legend.append("g")
+  const legendRow = legend2.append("g")
     .attr("transform", `translate(0, ${i*20})`)
   legendRow.append("rect")
     .attr("width", 10)
@@ -96,17 +99,17 @@ for (let key of Object.keys(dataInfo)) {
     .attr("x", 20)
     .attr("y", 10)
     .attr("text-anchor", "start")
-    .style("text-transform", "capitalize")
+    // .style("text-transform", "capitalize")
     .text(dataInfo[key].text)
   // upper left numbers revealed on mouseover
+  // hoverNumber.append("text")
+  //   .attr("x", 18)
+  //   .attr("y", 18 + (i * 18))
+  //   .text(dataInfo[key].text);
   hoverNumber.append("text")
-    .attr("x", 18)
-    .attr("y", 18 + (i * 18))
-    .text(dataInfo[key].shortText);
-  hoverNumber.append("text")
-    .attr("class", key)
-    .attr("x", 192)
-    .attr("y", 18 + (i * 18))
+    .attr("class", `${key} numbers`)
+    .attr("x", 310)
+    .attr("y", 29 + (i * 20))
     .attr("text-anchor", "end");
   i = i + 1;
 }
@@ -123,15 +126,15 @@ d3.json("data/texas.json").then(data=> {
       .y(d => yScale(d.one_dose))
     )
 
-    g.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "#538200")
-      .attr("stroke-width", 2.0)
-      .attr("d", d3.line()
-        .x(d => xScale(parseTime(d.date)))
-        .y(d => yScale(d.vax_administered))
-      )
+  g.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#538200")
+    .attr("stroke-width", 2.0)
+    .attr("d", d3.line()
+      .x(d => xScale(parseTime(d.date)))
+      .y(d => yScale(d.vax_administered))
+    )
 
   g.append("path")
     .datum(data)
@@ -158,6 +161,13 @@ d3.json("data/texas.json").then(data=> {
     .attr("class", "overlay")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
+    .on("touchstart", function() { hoverNumber.style("display", null); })
+    .on("touchend", function() { 
+      hoverNumber.style("display", "none");
+      hoverNumber.selectAll(".tooltip-dot").remove();
+      hoverNumber.selectAll(".tooltip-number").remove();
+    })
+    .on("touchmove", mousemove)
     .on("mouseover", function() { hoverNumber.style("display", null); })
     .on("mouseout", function() { 
       hoverNumber.style("display", "none");
@@ -175,6 +185,12 @@ d3.json("data/texas.json").then(data=> {
             d0 = data[i - 1],
             d1 = data[i],
             d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
+        hoverNumber.append("text")
+          .attr("class", "tooltip-dot")
+          .attr("x", 20)
+          .attr("y", 10)
+          // .attr("text-anchor", "end")
+          .text(`Date: ${shortTime(parseTime(d.date))}`)
         for (let key of Object.keys(d)) {
           if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
             hoverNumber.append("circle")

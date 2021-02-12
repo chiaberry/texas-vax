@@ -35,8 +35,8 @@
   fill: #1492ff;
 }
 
-.hoverNumber text {
-  font-size: 12px;
+.numbers {
+  font-size: 95%;
 }
 
 .tooltip, .tooltip-likes {
