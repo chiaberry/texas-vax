@@ -42,7 +42,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 5500000])
+  .domain([0, 6000000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -51,6 +51,7 @@ g.append("g")
 
 const parseTime = d3.timeParse("%Y-%m-%d")
 const formatTime = d3.timeFormat("%Y-%m-%d")
+const shortTime = d3.timeFormat("%b %d")
 const formatNumber = num => num.toLocaleString();
 
 const dataInfo = {
@@ -80,7 +81,7 @@ const dataInfo = {
 const legend = svgLegend.append("g")
   .attr("transform", `translate(${0}, ${200})`)
 const legend2 = g.append("g")
-  .attr("transform", 'translate(10, 18)')
+  .attr("transform", 'translate(20, 18)')
 const hoverNumber = g.append("g")
   .attr("class", "focus")
   .style("display", "none");
@@ -106,8 +107,8 @@ for (let key of Object.keys(dataInfo)) {
   //   .attr("y", 18 + (i * 18))
   //   .text(dataInfo[key].text);
   hoverNumber.append("text")
-    .attr("class", key)
-    .attr("x", 300)
+    .attr("class", `${key} numbers`)
+    .attr("x", 310)
     .attr("y", 29 + (i * 20))
     .attr("text-anchor", "end");
   i = i + 1;
@@ -125,15 +126,15 @@ d3.json("data/texas.json").then(data=> {
       .y(d => yScale(d.one_dose))
     )
 
-    g.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "#538200")
-      .attr("stroke-width", 2.0)
-      .attr("d", d3.line()
-        .x(d => xScale(parseTime(d.date)))
-        .y(d => yScale(d.vax_administered))
-      )
+  g.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#538200")
+    .attr("stroke-width", 2.0)
+    .attr("d", d3.line()
+      .x(d => xScale(parseTime(d.date)))
+      .y(d => yScale(d.vax_administered))
+    )
 
   g.append("path")
     .datum(data)
@@ -160,6 +161,13 @@ d3.json("data/texas.json").then(data=> {
     .attr("class", "overlay")
     .attr("width", WIDTH)
     .attr("height", HEIGHT)
+    .on("touchstart", function() { hoverNumber.style("display", null); })
+    .on("touchend", function() { 
+      hoverNumber.style("display", "none");
+      hoverNumber.selectAll(".tooltip-dot").remove();
+      hoverNumber.selectAll(".tooltip-number").remove();
+    })
+    .on("touchmove", mousemove)
     .on("mouseover", function() { hoverNumber.style("display", null); })
     .on("mouseout", function() { 
       hoverNumber.style("display", "none");
@@ -177,6 +185,12 @@ d3.json("data/texas.json").then(data=> {
             d0 = data[i - 1],
             d1 = data[i],
             d = date - parseTime(d0.date) > parseTime(d1.date) - date ? d1 : d0;
+        hoverNumber.append("text")
+          .attr("class", "tooltip-dot")
+          .attr("x", 20)
+          .attr("y", 10)
+          // .attr("text-anchor", "end")
+          .text(`Date: ${shortTime(parseTime(d.date))}`)
         for (let key of Object.keys(d)) {
           if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
             hoverNumber.append("circle")
