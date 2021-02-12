@@ -1,5 +1,5 @@
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
-const WIDTH = 750 - MARGIN.LEFT - MARGIN.RIGHT
+const WIDTH = 850 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
 
 const svg = d3.select("#chart-area").append("svg")
@@ -31,7 +31,7 @@ const yLabel = g.append("text")
 
 //todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 1, 10)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 1, 15)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6)
@@ -65,7 +65,7 @@ const dataInfo = {
     shortText: "Administered: "
   },
   "one_dose": {
-    text: "People with at least one dose",
+    text: "People with 1+ dose",
     color: "#00bde3",
     shortText: "One Dose: "
  },
