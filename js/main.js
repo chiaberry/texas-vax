@@ -29,9 +29,8 @@ const yLabel = g.append("text")
   .text("Doses and Population")
 
 
-//todo: move into data to get end date
 const xScale = d3.scaleTime()
-    .domain([new Date(2021, 0, 12), new Date(2021, 1, 23)])
+    .domain([new Date(2021, 0, 12), new Date(2021, 2, 5)])
     .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
     .tickSize(6)
@@ -42,7 +41,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 6500000])
+  .domain([0, 7700000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
