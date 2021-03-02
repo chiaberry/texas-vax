@@ -15,6 +15,8 @@ const xScaleH = d3.scaleLinear()
     .domain([0, 3866923])
     .range([0, 500]);
 
+const formatCommaNumber = commaNum => Number(commaNum.replace(/,/g, ''));
+
 // todo: clean the data
 
 d3.csv("data/tx_county_recent.csv").then(data=> {
@@ -32,12 +34,20 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     .attr("height", BARHEIGHT)
     .attr("fill", " #f2e4d4")
   gCounty.append("text")
-    .attr("x", 500)
-    .attr("y", 55)
+    .attr("x", 505)
+    .attr("y", 0)
     .text(`Population 16+: ${data[228]["Population, 16+"]}`)
+  gCounty.append("text")
+    .attr("x", 505)
+    .attr("y", 20)
+    .text(`Pct with 1 dose: ${(formatCommaNumber(data[228]["People Vaccinated with at least One Dose"])*100/formatCommaNumber(data[228]["Population, 16+"])).toFixed(2)}%`)
+  gCounty.append("text")
+    .attr("x", 505)
+    .attr("y", 40)
+    .text(`Pct with 2 dose: ${(formatCommaNumber(data[228]["People Fully Vaccinated"])*100/formatCommaNumber(data[228]["Population, 16+"])).toFixed(2)}%`)
 
   gCounty.append("rect")
-    .attr("width", xScaleC(Number(data[228]["Total Doses Allocated"].replace(/,/g, ''))))
+    .attr("width", xScaleC(formatCommaNumber(data[228]["Total Doses Allocated"])))
     .attr("height", BARHEIGHT)
     .attr("fill", "#fa9441")
   gCounty.append("text")
@@ -101,9 +111,17 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     .attr("fill", " #f2e4d4")
     .attr("transform", "translate(0, 200)")
   gCounty.append("text")
-    .attr("x", 500)
-    .attr("y", 255)
+    .attr("x", 505)
+    .attr("y", 200)
     .text(`Population 16+: ${data[102]["Population, 16+"]}`)
+    gCounty.append("text")
+    .attr("x", 505)
+    .attr("y", 220)
+    .text(`Pct with 1 dose: ${(formatCommaNumber(data[102]["People Vaccinated with at least One Dose"])*100/formatCommaNumber(data[102]["Population, 16+"])).toFixed(2)}%`)
+  gCounty.append("text")
+    .attr("x", 505)
+    .attr("y", 240)
+    .text(`Pct with 2 dose: ${(formatCommaNumber(data[102]["People Fully Vaccinated"])*100/formatCommaNumber(data[102]["Population, 16+"])).toFixed(2)}%`)
 
   gCounty.append("rect")
     .attr("width", xScaleH(Number(data[102]["Total Doses Allocated"].replace(/,/g, ''))))

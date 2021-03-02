@@ -7,7 +7,7 @@ const svg = d3.select("#chart-area").append("svg")
   .attr("height", 500)
 const svgLegend = d3.select("#chart-legend").append("svg")
   .attr("width", 250)
-  .attr("height", 500)
+  .attr("height", 400)
 
 const g = svg.append("g")
   .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
@@ -41,7 +41,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 7700000])
+  .domain([0, 9000000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -76,10 +76,37 @@ const dataInfo = {
  }
 }
 
+const percentages = svgLegend.append("g")
+  .attr("transform", 'translate(0, 100)')
+
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 20)
+  .text("Population over 16")
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 44)
+  .text("22,421,178")
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 68)
+  .text("Percentage with 1+ dose")
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 88)
+  .attr("class", "one_dose_percent")
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 112)
+  .text("Percentage fully vaccinated")
+percentages.append("text")
+  .attr("x", 20)
+  .attr("y", 132)
+  .attr("class", "full_vax_percent")
+
+
 /* LEGEND */
-const legend = svgLegend.append("g")
-  .attr("transform", `translate(${0}, ${200})`)
-const legend2 = g.append("g")
+const legend = g.append("g")
   .attr("transform", 'translate(20, 18)')
 const hoverNumber = g.append("g")
   .attr("class", "focus")
@@ -88,7 +115,7 @@ const hoverNumber = g.append("g")
 let i = 0;
 for (let key of Object.keys(dataInfo)) {
   // legend
-  const legendRow = legend2.append("g")
+  const legendRow = legend.append("g")
     .attr("transform", `translate(0, ${i*20})`)
   legendRow.append("rect")
     .attr("width", 10)
@@ -190,6 +217,8 @@ d3.json("data/texas.json").then(data=> {
           .attr("y", 10)
           // .attr("text-anchor", "end")
           .text(`Date: ${shortTime(parseTime(d.date))}`)
+        percentages.select(".one_dose_percent").text(`${((d.one_dose/22421178)*100).toFixed(2)} %`)
+        percentages.select(".full_vax_percent").text(`${((d.fully_vax/22421178)*100).toFixed(2)} %`)
         for (let key of Object.keys(d)) {
           if (key !== 'date' && key !== 'pop_over_16' && key !== 'pop_over_65') {
             hoverNumber.append("circle")
