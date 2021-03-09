@@ -8,7 +8,7 @@ const gCounty = svgCounty.append("g")
   .attr("transform", `translate(0, 50)`)
   .attr("id", "countyRectangle")
 
-const xScaleC = d3.scaleLinear()
+let xScaleC = d3.scaleLinear()
     .domain([0, 1032386])
     .range([0, 500]);
 
@@ -47,9 +47,7 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     gCounty.selectAll('*').remove()
 
     // todo: update the xscale
-    // const xScaleC = d3.scaleLinear()
-    // .domain([0, 1032386])
-    // .range([0, 500]);
+    xScaleC.domain([0, formatCommaNumber(data[index][populationVar])]).range([0,500])
 
     svgCounty.append("text")
       .attr("x", 0)
