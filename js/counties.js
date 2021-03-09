@@ -43,7 +43,8 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
 
   const drawCountyA = index => {
 
-    // svgCounty.selectAll('*').remove()
+    svgCounty.selectAll('.county-name').remove()
+    gCounty.selectAll('*').remove()
 
     // todo: update the xscale
     // const xScaleC = d3.scaleLinear()
