@@ -26,6 +26,19 @@ const returnPercentage = (numerator, denominator) => (formatCommaNumber(numerato
 
 d3.csv("data/tx_county_recent.csv").then(data=> {
   console.log(data[229])
+  let countyNames = []
+
+  data.map((d) => {
+    countyNames.push(d["County Name"])
+  })
+
+  d3.select("#selectButtonA")
+      .selectAll('myOptions')
+        .data(countyNames)
+      .enter()
+        .append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
   svgCounty.append("text")
     .attr("x", 0)
