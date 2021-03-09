@@ -33,12 +33,20 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
   })
 
   d3.select("#selectButtonA")
-      .selectAll('myOptions')
-        .data(countyNames)
-      .enter()
-        .append('option')
-      .text(function (d) { return d; }) // text showed in the menu
-      .attr("value", function (d) { return d; }) // corresponding value returned by the button
+    .selectAll('myOptions')
+      .data(countyNames)
+    .enter()
+      .append('option')
+    .text(function (d) { return d; }) // text showed in the menu
+    .attr("value", function (d) { return countyNames.indexOf(d); }) // corresponding value returned by the button
+
+  d3.select("#selectButtonA").on("change", function(d) {
+    // recover the option that has been chosen
+    var selectedOption = d3.select(this).property("value")
+    // run the updateChart function with this selected option
+    console.log(selectedOption, countyNames.indexOf(selectedOption))
+    // update(selectedOption)
+  })
 
   svgCounty.append("text")
     .attr("x", 0)
