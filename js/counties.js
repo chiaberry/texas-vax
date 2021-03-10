@@ -46,6 +46,7 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     .enter()
       .append('option')
     .text(function (d) { return d; }) // text showed in the menu
+    .property("selected", d => (d === "Travis"))
     .attr("value", function (d) { return countyNames.indexOf(d); }) // corresponding value returned by the button
 
   d3.select("#selectButtonB")
@@ -53,7 +54,8 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
       .data(countyNames)
     .enter()
       .append('option')
-    .text(function (d) { return d; }) // text showed in the menu
+    .text(function (d) { return d; })
+    .property("selected", d => (d === "Harris"))
     .attr("value", function (d) { return countyNames.indexOf(d); })
 
   const drawCountyA = index => {
