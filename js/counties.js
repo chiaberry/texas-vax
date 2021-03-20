@@ -31,14 +31,21 @@ const fullyVaxVar = "People Fully Vaccinated";
 
 const formatCommaNumber = commaNum => Number(commaNum.replace(/,/g, ''));
 const returnPercentage = (numerator, denominator) => (formatCommaNumber(numerator)*100/formatCommaNumber(denominator)).toFixed(2)
+let countyNumbers = {}
 
 d3.csv("data/tx_county_recent.csv").then(data=> {
   console.log(data[229])
   let countyNames = []
 
   data.map((d) => {
-    countyNames.push(d["County Name"])
+    countyNames.push(d["County Name"]);
+    countyNumbers[d["County Name"]] = { 
+      "one_dose": formatCommaNumber(d[atLeastOneVar])/formatCommaNumber(d[populationVar]),
+      "both_dose": formatCommaNumber(d[fullyVaxVar])/formatCommaNumber(d[populationVar])
+    };
   })
+
+  console.log(countyNumbers)
 
   d3.select("#selectButtonA")
     .selectAll('myOptions')
