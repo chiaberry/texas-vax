@@ -45,8 +45,6 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     };
   })
 
-  console.log(countyNumbers)
-
   d3.select("#selectButtonA")
     .selectAll('myOptions')
       .data(countyNames)
