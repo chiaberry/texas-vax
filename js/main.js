@@ -30,7 +30,7 @@ const yLabel = g.append("text")
 
 
 const xScale = d3.scaleTime()
-  .domain([new Date(2021, 0, 12), new Date(2021, 2, 21)])
+  .domain([new Date(2021, 0, 12), new Date(2021, 2, 26)])
   .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
   .tickSize(6)
@@ -41,7 +41,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 13000000])
+  .domain([0, 15000000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -191,20 +191,17 @@ d3.json("data/texas.json").then(data=> {
     .on("touchend", function() { 
       hoverNumber.style("display", "none");
       hoverNumber.selectAll(".tooltip-dot").remove();
-      hoverNumber.selectAll(".tooltip-number").remove();
     })
     .on("touchmove", mousemove)
     .on("mouseover", function() { hoverNumber.style("display", null); })
     .on("mouseout", function() { 
       hoverNumber.style("display", "none");
       hoverNumber.selectAll(".tooltip-dot").remove();
-      hoverNumber.selectAll(".tooltip-number").remove();
     })
     .on("mousemove", mousemove);
 
     function mousemove() {
         hoverNumber.selectAll(".tooltip-dot").remove();
-        hoverNumber.selectAll(".tooltip-number").remove();
         const bisectDate = d3.bisector(d => d.date).right;
         var date = xScale.invert(d3.mouse(this)[0]),
             i = bisectDate(data, formatTime(date), 1)
