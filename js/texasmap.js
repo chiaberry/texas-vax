@@ -17,7 +17,6 @@ const colorRange = ["#ffffd9","#eff9bd","#d5eeb3","#a9ddb7","#73c9bd","#45b4c2",
 
 var colorScale = d3.scaleThreshold()
   .domain([.1, .2, .3, .4, .5, .6, .7, .8, .9])
-//  .range(["#e8f6e3","#d3eecd","#b7e2b1","#97d494","#73c378","#4daf62","#2f984f","#157f3b","#036429","#00441b"])
   .range(colorRange)
 
 colorRange.map((color, i) => {
@@ -38,21 +37,21 @@ d3.json("data/txcountygeo.json").then(data => {
     console.log(d.properties.name, countyNumbers[d.properties.name].one_dose, countyNumbers[d.properties.name].both_dose)
     d3.selectAll(".County")
       .style("opacity", .7)
-      // two word counties xont work
+      // two word counties dont work
     d3.selectAll(`.${d.properties.name}`)
       .style("stroke", "black")
       .style("opacity", 1)
     countyName = d.properties.name;
       gMapLegend.append("text")
     .attr("x", 20)
-    .attr("y", 20)
+    .attr("y", 40)
     .attr("class", "countyLegend")
     .text(`County: ${d.properties.name}`)
-  gMapLegend.append("text")
-    .attr("x", 20)
-    .attr("y", 50)
-    .attr("class", "countyLegend")
-    .text(`Population 16+:`)
+  // gMapLegend.append("text")
+  //   .attr("x", 20)
+  //   .attr("y", 50)
+  //   .attr("class", "countyLegend")
+  //   .text(`Population 16+:`)
   gMapLegend.append("text")
     .attr("x", 20)
     .attr("y", 70)
@@ -89,6 +88,10 @@ d3.json("data/txcountygeo.json").then(data => {
     .attr("x", 0)
     .attr("y", 0)
     .text("Map shows pct of pop 16+ with: One Dose")
+  gMapLegend.append("text")
+    .attr("x", 0)
+    .attr("y", 20)
+    .text("Hover over County to see detail")
   
 
 
