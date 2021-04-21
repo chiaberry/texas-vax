@@ -709,6 +709,78 @@
     "fully_vax": 4468935,
     "pop_over_16": 22421178,
     "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-09",
+    "total_doses": 19397865,
+    "vax_administered": 13655710,
+    "one_dose": 8817293,
+    "fully_vax": 5257984,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-10",
+    "total_doses": 19397865,
+    "vax_administered": 14044543,
+    "one_dose": 9034618,
+    "fully_vax": 5465116,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-11",
+    "total_doses": 19397865,
+    "vax_administered": 14312547,
+    "one_dose": 9186322,
+    "fully_vax": 5613265,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-15",
+    "total_doses": 21385845,
+    "vax_administered": 15229321,
+    "one_dose": 9707452,
+    "fully_vax": 6121223,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {   
+    "date": "2021-04-16",
+    "total_doses": 21385845,
+    "vax_administered": 15493454,
+    "one_dose": 9836891,
+    "fully_vax": 6260744,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-19",
+    "total_doses": 23521675,
+    "vax_administered": 16053629,
+    "one_dose": 10140180,
+    "fully_vax": 6524433,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-20",
+    "total_doses": 23521675,
+    "vax_administered": 16178433,
+    "one_dose": 10197092,
+    "fully_vax": 6593612,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
+  },
+  {
+    "date": "2021-04-21",
+    "total_doses": 23521675,
+    "vax_administered": 16367061,
+    "one_dose": 10284153,
+    "fully_vax": 6696614,
+    "pop_over_16": 22421178,
+    "pop_over_65": 3734229
   }
 ]
 

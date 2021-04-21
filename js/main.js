@@ -30,7 +30,7 @@ const yLabel = g.append("text")
 
 
 const xScale = d3.scaleTime()
-  .domain([new Date(2021, 0, 12), new Date(2021, 3, 5)])
+  .domain([new Date(2021, 0, 12), new Date(2021, 3, 23)])
   .range([0, WIDTH]);
 const xAxisGenerator = d3.axisBottom(xScale)
   .tickSize(6)
@@ -41,7 +41,7 @@ g.append("g")
   .call(xAxisGenerator)
 
 const yScale = d3.scaleLinear()
-  .domain([0, 17000000])
+  .domain([0, 26000000])
   .range([HEIGHT, 0])
 const yAxisGenerator = d3.axisLeft(yScale)
 g.append("g")
@@ -60,7 +60,7 @@ const dataInfo = {
     shortText: "Allocated: "
   },
   "vax_administered": {
-    text: "Vaccine doses administered",
+    text: "Vaccine doses given",
     color: "#538200",
     shortText: "Administered: "
   },
@@ -139,6 +139,20 @@ for (let key of Object.keys(dataInfo)) {
     .attr("text-anchor", "end");
   i = i + 1;
 }
+
+g.append("line")
+  .attr("x1", xScale(new Date(2021, 2, 1)))
+  .attr("y1", yScale(22421178))
+  .attr("x2", xScale(new Date(2021, 3, 23)))
+  .attr("y2", yScale(22421178))
+  .attr("stroke", "#c0c0c0")
+  .attr("stroke-dasharray", "3 1")
+g.append("text")
+  .attr("x", xScale(new Date(2021, 2, 1)))
+  .attr("y", yScale(23021388))
+  .attr("stroke", "#c0c0c0")
+  .attr("class", "population-number")
+  .text(`Population over 16`)
 
 
 d3.json("data/texas.json").then(data=> {
