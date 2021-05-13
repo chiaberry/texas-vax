@@ -69,6 +69,9 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
 
     xScaleC.domain([0, formatCommaNumber(data[index][populationVar])]).range([0,500])
 
+    let showAllocated = formatCommaNumber(data[index][totalDoseAllocVar]) < formatCommaNumber(data[index][populationVar])
+    let showAdmin = formatCommaNumber(data[index][totalDoseAdminVar]) < formatCommaNumber(data[index][populationVar])
+
     svgCounty.append("text")
       .attr("x", 0)
       .attr("y", 15)
@@ -92,24 +95,28 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
       .attr("y", 40)
       .text(`Pct with 2 dose: ${returnPercentage(data[index][fullyVaxVar], data[index][populationVar])}%`)
 
-    gCounty.append("rect")
-      .attr("width", xScaleC(formatCommaNumber(data[index][totalDoseAllocVar])))
-      .attr("height", BARHEIGHT)
-      .attr("fill", "#fa9441")
-    gCounty.append("text")
-      .attr("x", xScaleC(formatCommaNumber(data[index][totalDoseAllocVar])))
-      .attr("y", -5)
-      .attr("fill-opacity", "50%")
-      .text(`Allocated: ${data[index][totalDoseAllocVar]}`)
+    if (showAllocated) {
+      gCounty.append("rect")
+        .attr("width", xScaleC(formatCommaNumber(data[index][totalDoseAllocVar])))
+        .attr("height", BARHEIGHT)
+        .attr("fill", "#fa9441")
+      gCounty.append("text")
+        .attr("x", xScaleC(formatCommaNumber(data[index][totalDoseAllocVar])))
+        .attr("y", -5)
+        .attr("fill-opacity", "50%")
+        .text(`Allocated: ${data[index][totalDoseAllocVar]}`)
+    }
 
-    gCounty.append("rect")
-      .attr("width", xScaleC(formatCommaNumber(data[index][totalDoseAdminVar])))
-      .attr("height", BARHEIGHT)
-      .attr("fill", "#97d4ea")
-    gCounty.append("text")
-      .attr("x", xScaleC(formatCommaNumber(data[index][totalDoseAdminVar])))
-      .attr("y", 55)
-      .text(`Administered: ${data[index][totalDoseAdminVar]}`)
+    if (showAdmin) {
+      gCounty.append("rect")
+        .attr("width", xScaleC(formatCommaNumber(data[index][totalDoseAdminVar])))
+        .attr("height", BARHEIGHT)
+        .attr("fill", "#97d4ea")
+      gCounty.append("text")
+        .attr("x", xScaleC(formatCommaNumber(data[index][totalDoseAdminVar])))
+        .attr("y", 55)
+        .text(`Administered: ${data[index][totalDoseAdminVar]}`)
+    }
 
     gCounty.append("rect")
       .attr("width", xScaleC(formatCommaNumber(data[index][atLeastOneVar])))
@@ -150,6 +157,8 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
     gCountyB.selectAll('*').remove()
 
     xScaleB.domain([0, formatCommaNumber(data[index][populationVar])]).range([0,500])
+    let showAllocated = formatCommaNumber(data[index][totalDoseAllocVar]) < formatCommaNumber(data[index][populationVar])
+    let showAdmin = formatCommaNumber(data[index][totalDoseAdminVar]) < formatCommaNumber(data[index][populationVar])
 
     svgCountyB.append("text")
       .attr("x", 0)
@@ -175,26 +184,30 @@ d3.csv("data/tx_county_recent.csv").then(data=> {
       .attr("y", 40)
       .text(`Pct with 2 dose: ${returnPercentage(data[index][fullyVaxVar], data[index][populationVar])}%`)
 
-    gCountyB.append("rect")
-      .attr("width", xScaleB(formatCommaNumber(data[index][totalDoseAllocVar])))
-      .attr("height", BARHEIGHT)
-      .attr("fill", "#fa9441")
-      //.attr("transform", "translate(0, 200)")
-    gCountyB.append("text")
-      .attr("x", xScaleB(formatCommaNumber(data[index][totalDoseAllocVar])))
-      .attr("y", -5)
-      .attr("fill-opacity", "50%")
-      .text(`Allocated: ${data[index][totalDoseAllocVar]}`)
+    if (showAllocated) {    
+        gCountyB.append("rect")
+          .attr("width", xScaleB(formatCommaNumber(data[index][totalDoseAllocVar])))
+          .attr("height", BARHEIGHT)
+          .attr("fill", "#fa9441")
+          //.attr("transform", "translate(0, 200)")
+        gCountyB.append("text")
+          .attr("x", xScaleB(formatCommaNumber(data[index][totalDoseAllocVar])))
+          .attr("y", -5)
+          .attr("fill-opacity", "50%")
+          .text(`Allocated: ${data[index][totalDoseAllocVar]}`)
+      }
 
-    gCountyB.append("rect")
-      .attr("width", xScaleB(formatCommaNumber(data[index][totalDoseAdminVar])))
-      .attr("height", BARHEIGHT)
-      .attr("fill", "#97d4ea")
-      //.attr("transform", "translate(0, 200)")
-    gCountyB.append("text")
-      .attr("x", xScaleB(formatCommaNumber(data[index][totalDoseAdminVar])))
-      .attr("y", 55)
-      .text(`Administered: ${data[index][totalDoseAdminVar]}`)
+    if (showAdmin) {
+      gCountyB.append("rect")
+        .attr("width", xScaleB(formatCommaNumber(data[index][totalDoseAdminVar])))
+        .attr("height", BARHEIGHT)
+        .attr("fill", "#97d4ea")
+        //.attr("transform", "translate(0, 200)")
+      gCountyB.append("text")
+        .attr("x", xScaleB(formatCommaNumber(data[index][totalDoseAdminVar])))
+        .attr("y", 55)
+        .text(`Administered: ${data[index][totalDoseAdminVar]}`)
+      }
 
     gCountyB.append("rect")
       .attr("width", xScaleB(formatCommaNumber(data[index][atLeastOneVar])))
